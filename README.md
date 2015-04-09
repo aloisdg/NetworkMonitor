@@ -6,5 +6,6 @@ Original work by Chen Pang (First Posted 	1 Mar 2004) :
 
 stuff
 
+[speedtest app](http://www.codeproject.com/Articles/20931/A-Simple-Speedtest-Application)
 [speedof api](http://speedof.me/api.html)
 
