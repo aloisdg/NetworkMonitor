@@ -17,31 +17,30 @@ namespace NetworkTestWPF
 	{
 		public PlotModel MyModel { get; private set; }
 
-		private readonly NetworkAdapter[] adapters;
-		private readonly NetworkMonitor monitor;
+		private readonly NetworkAdapter[] _adapters;
+		private readonly NetworkMonitor _monitor;
 		private double _xValue = 1;
 
 		public MainViewModel()
 		{
-			monitor = new NetworkMonitor();
-			adapters = monitor.Adapters;
+			_monitor = new NetworkMonitor();
+			_adapters = _monitor.Adapters;
 
-			if (adapters.Length == 0)
+			if (_adapters.Length == 0)
 			{
 				MessageBox.Show("No network adapters found on this computer.");
 				return;
 			}
 
-			monitor.StopMonitoring();
-			monitor.StartMonitoring(adapters[1]);
+			_monitor.StopMonitoring();
+			_monitor.StartMonitoring(_adapters[1]);
 
 			MyModel = new PlotModel { Title = "Up / Down (kbps)" };
 			MyModel.Series.Add(new OxyPlot.Series.LineSeries());
 			MyModel.Series.Add(new OxyPlot.Series.LineSeries());
 
-			var dispatcherTimer = new DispatcherTimer();
+			var dispatcherTimer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 1)};
 			dispatcherTimer.Tick += dispatcherTimer_Tick;
-			dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
 			dispatcherTimer.Start();
 		}
 
@@ -49,7 +48,7 @@ namespace NetworkTestWPF
 		{
 			Dispatcher.CurrentDispatcher.Invoke(() =>
 			{
-				var adapter = adapters[1];
+				var adapter = _adapters[1];
 				var upload = MyModel.Series[0] as OxyPlot.Series.LineSeries;
 				var download = MyModel.Series[1] as OxyPlot.Series.LineSeries;
 

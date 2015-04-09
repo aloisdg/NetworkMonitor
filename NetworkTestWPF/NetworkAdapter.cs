@@ -14,41 +14,41 @@ namespace Echevil
 		/// </summary>
 		internal NetworkAdapter(string name)
 		{
-			this.name	=	name;
+			this.name = name;
 		}
 
-		private long dlSpeed, ulSpeed;				// Download\Upload speed in bytes per second.
-		private long dlValue, ulValue;				// Download\Upload counter value in bytes.
-		private long dlValueOld, ulValueOld;		// Download\Upload counter value one second earlier, in bytes.
+		private long _dlSpeed, _ulSpeed;				// Download\Upload speed in bytes per second.
+		private long _dlValue, _ulValue;				// Download\Upload counter value in bytes.
+		private long _dlValueOld, _ulValueOld;		// Download\Upload counter value one second earlier, in bytes.
 
 		internal string name;								// The name of the adapter.
-		internal PerformanceCounter dlCounter, ulCounter;	// Performance counters to monitor download and upload speed.
+		internal PerformanceCounter DlCounter, UlCounter;	// Performance counters to monitor download and upload speed.
 
 		/// <summary>
 		/// Preparations for monitoring.
 		/// </summary>
-		internal void init()
+		internal void Init()
 		{
 			// Since dlValueOld and ulValueOld are used in method refresh() to calculate network speed, they must have be initialized.
-			this.dlValueOld	=	this.dlCounter.NextSample().RawValue;
-			this.ulValueOld	=	this.ulCounter.NextSample().RawValue;
+			_dlValueOld = DlCounter.NextSample().RawValue;
+			_ulValueOld = UlCounter.NextSample().RawValue;
 		}
 
 		/// <summary>
 		/// Obtain new sample from performance counters, and refresh the values saved in dlSpeed, ulSpeed, etc.
 		/// This method is supposed to be called only in NetworkMonitor, one time every second.
 		/// </summary>
-		internal void refresh()
+		internal void Refresh()
 		{
-			this.dlValue	=	this.dlCounter.NextSample().RawValue;
-			this.ulValue	=	this.ulCounter.NextSample().RawValue;
-			
-			// Calculates download and upload speed.
-			this.dlSpeed	=	this.dlValue - this.dlValueOld;
-			this.ulSpeed	=	this.ulValue - this.ulValueOld;
+			_dlValue = DlCounter.NextSample().RawValue;
+			_ulValue = UlCounter.NextSample().RawValue;
 
-			this.dlValueOld	=	this.dlValue;
-			this.ulValueOld	=	this.ulValue;
+			// Calculates download and upload speed.
+			_dlSpeed = _dlValue - _dlValueOld;
+			_ulSpeed = _ulValue - _ulValueOld;
+
+			_dlValueOld = _dlValue;
+			_ulValueOld = _ulValue;
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace Echevil
 		/// <returns>The name of the adapter.</returns>
 		public override string ToString()
 		{
-			return this.name;
+			return name;
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace Echevil
 		{
 			get
 			{
-				return this.name;
+				return name;
 			}
 		}
 		/// <summary>
@@ -77,7 +77,7 @@ namespace Echevil
 		{
 			get
 			{
-				return this.dlSpeed;
+				return _dlSpeed;
 			}
 		}
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Echevil
 		{
 			get
 			{
-				return this.ulSpeed;
+				return _ulSpeed;
 			}
 		}
 		/// <summary>
@@ -97,7 +97,7 @@ namespace Echevil
 		{
 			get
 			{
-				return this.dlSpeed/1024.0;
+				return _dlSpeed / 1024.0;
 			}
 		}
 		/// <summary>
@@ -107,7 +107,7 @@ namespace Echevil
 		{
 			get
 			{
-				return this.ulSpeed/1024.0;
+				return _ulSpeed / 1024.0;
 			}
 		}
 	}
